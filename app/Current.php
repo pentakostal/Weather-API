@@ -19,8 +19,9 @@ class Current
         $weatherData = json_decode(file_get_contents($apiUrl), true);
 
         $temperature[] = $weatherData['name'];
-        $temperature[] = $weatherData['wether'][0]['main'];
-        $temperature[] = $weatherData['main']['temp'];
+        $temperature[] = $weatherData['weather'][0]['main'];
+        $temperature[] = round($weatherData['main']['temp']);
+        $temperature[] = $weatherData['wind']['speed'];
 
         return $temperature;
     }
