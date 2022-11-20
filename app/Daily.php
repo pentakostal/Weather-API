@@ -1,25 +1,57 @@
 <?php
+
 namespace App;
 
-class Current
+class Daily
 {
-    private $cityName;
+    private string $cityName;
 
     public function __construct(string $cityName)
     {
         $this->cityName = $cityName;
     }
 
-    public function getCurrent(): array
+    public function getDaily(): array
     {
         $apiKey = "a0d5241d2f9b01766802b3f6a012a7cd";
-        $apiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' . $this->cityName . '&appid=' . $apiKey . '&units=metric';
+        $apiUrl = 'https://api.openweathermap.org/data/2.5/forecast?q=' . $this->cityName . '&appid=' . $apiKey . '&units=metric';;
 
         $weatherData = json_decode(file_get_contents($apiUrl), true);
+        $weatherData24 = [];
 
-        $data[] = $weatherData['weather'][0]['main'];
-        $data[] = round($weatherData['main']['temp']);
-        $data[] = round($weatherData['wind']['speed']);
+        for ($i = 0; $i < 8; $i++) {
+            $weatherData24[] = $weatherData['list'][$i];
+        }
+
+        foreach ($weatherData24 as &$value) {
+            $sumWeather[] = (string) $value['weather'][0]['main'];
+        }
+        $data[] = key(array_count_values(explode(' ', implode(' ', $sumWeather))));
+
+        foreach ($weatherData24 as &$value) {
+            $sumMin[] = (float) $value['main']['temp_min'];
+        }
+        $data[] = round((array_sum($sumMin) / 8));
+
+        foreach ($weatherData24 as &$value) {
+            $sumMax[] = (float) $value['main']['temp_max'];
+        }
+        $data[] = round((array_sum($sumMax) / 8));
+
+        foreach ($weatherData24 as &$value) {
+            $sumHumidity[] = (float) $value['main']['humidity'];
+        }
+        $data[] = round((array_sum($sumHumidity) / 8));
+
+        foreach ($weatherData24 as &$value) {
+            $sumPressure[] = (float) $value['main']['pressure'];
+        }
+        $data[] = round((array_sum($sumPressure) / 8));
+
+        foreach ($weatherData24 as &$value) {
+            $sumSpeed[] = (float) $value['wind']['speed'];
+        }
+        $data[] = (int) round((array_sum($sumSpeed) / 8));
 
         return $data;
     }

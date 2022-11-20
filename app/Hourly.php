@@ -17,11 +17,11 @@ class Hourly
         $apiUrl = 'https://api.openweathermap.org/data/2.5/forecast?q=' . $this->cityName . '&appid=' . $apiKey . '&units=metric';;
 
         $weatherData = json_decode(file_get_contents($apiUrl), true);
-        $data[] = $weatherData['list'][3]['weather'][0]['main'];
+        $data[] = (string) $weatherData['list'][3]['weather'][0]['main'];
         $data[] = round($weatherData['list'][3]['main']['temp_min']);
         $data[] = round($weatherData['list'][3]['main']['temp_max']);
-        $data[] = $weatherData['list'][3]['main']['humidity'];
-        $data[] = $weatherData['list'][3]['main']['pressure'];
+        $data[] = (int) $weatherData['list'][3]['main']['humidity'];
+        $data[] = (int) $weatherData['list'][3]['main']['pressure'];
         $data[] = round($weatherData['list'][3]['wind']['speed']);
 
         return $data;
