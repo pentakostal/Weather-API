@@ -13,8 +13,8 @@ class Daily
 
     public function getDaily(): array
     {
-        $apiKey = "a0d5241d2f9b01766802b3f6a012a7cd";
-        $apiUrl = 'https://api.openweathermap.org/data/2.5/forecast?q=' . $this->cityName . '&appid=' . $apiKey . '&units=metric';;
+        $apiKey = $_ENV['API_KEY'];
+        $apiUrl = 'https://api.openweathermap.org/data/2.5/forecast?q=' . $this->cityName . '&appid=' . $apiKey . '&units=metric';
 
         $weatherData = json_decode(file_get_contents($apiUrl), true);
         $weatherData24 = [];

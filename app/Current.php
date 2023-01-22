@@ -12,7 +12,7 @@ class Current
 
     public function getCurrent(): array
     {
-        $apiKey = "a0d5241d2f9b01766802b3f6a012a7cd";
+        $apiKey = $_ENV['API_KEY'];
         $apiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' . $this->cityName . '&appid=' . $apiKey . '&units=metric';
 
         $weatherData = json_decode(file_get_contents($apiUrl), true);
